@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Nunito } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar';
 
@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   description: 'Luv Findr',
 };
 
+const nunito = Nunito({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '900', '1000'],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={nunito.className}>
         <Navbar />
         {children}
       </body>
