@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import bcypt from 'bcryptjs';
 import prisma from '@/lib/db';
 import { registerUserSchema } from '@/validation/registerUserSchema';
-import bcypt from 'bcryptjs';
-import { Gender } from '@prisma/client';
 
 export async function POST(req: NextRequest) {
   try {
