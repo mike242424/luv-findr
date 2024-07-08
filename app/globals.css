@@ -6,6 +6,7 @@ html,
 body,
 :root {
   height: 100%;
+  background-color: #000;
 }
 
 @layer base {
@@ -28,7 +29,7 @@ body,
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 0 72.2% 50.6%;
+    --ring: 340, 100%, 59%;
     --radius: 0.5rem;
   }
 

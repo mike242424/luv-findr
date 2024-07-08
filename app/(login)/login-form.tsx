@@ -52,7 +52,7 @@ const LoginForm = () => {
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-3 w-9/12 sm:w-8/12 md:w-6/12 lg:w-4/12"
+        className="flex flex-col gap-3"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -60,11 +60,13 @@ const LoginForm = () => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold text-lg">Email:</FormLabel>
+              <FormLabel className="font-bold text-lg text-primary">
+                Email:
+              </FormLabel>
               <FormControl>
                 <Input {...field} type="text" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-primary" />
             </FormItem>
           )}
         />
@@ -73,11 +75,13 @@ const LoginForm = () => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold text-lg">Password:</FormLabel>
+              <FormLabel className="font-bold text-lg text-primary">
+                Password:
+              </FormLabel>
               <FormControl>
                 <Input {...field} type="password" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-primary" />
             </FormItem>
           )}
         />
