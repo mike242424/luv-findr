@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -50,46 +51,54 @@ const LoginForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form
-        className="flex flex-col gap-3"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <FormField
-          name="email"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold text-lg text-primary">
-                Email:
-              </FormLabel>
-              <FormControl>
-                <Input {...field} type="text" />
-              </FormControl>
-              <FormMessage className="text-primary" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="password"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-bold text-lg text-primary">
-                Password:
-              </FormLabel>
-              <FormControl>
-                <Input {...field} type="password" />
-              </FormControl>
-              <FormMessage className="text-primary" />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="font-bold mt-2">
-          Login
-        </Button>
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-3"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            name="email"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Email:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="password"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Password:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="font-bold mt-2">
+            Login
+          </Button>
+        </form>
+      </Form>
+      <div className="flex items-center gap-1 mt-3">
+        <p className="text-primary">Create account</p>
+        <Link href="/register">
+          <span className="text-primary font-bold underline">Here</span>
+        </Link>
+      </div>
+    </>
   );
 };
 
