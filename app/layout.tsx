@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar';
+import QueryClientContextProvider from '@/contexts/query-client-provider';
 
 export const metadata: Metadata = {
   title: 'Luv Findr',
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nunito.className}>
-        <Navbar />
-        {children}
+        <QueryClientContextProvider>
+          <Navbar />
+          {children}
+        </QueryClientContextProvider>
       </body>
     </html>
   );
