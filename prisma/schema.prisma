@@ -22,7 +22,6 @@ model User {
   firstName          String
   lastName           String
   dateOfBirth        DateTime
-  showGender         Boolean
   usersGender        Gender
   interestedInGender Gender
   about              String

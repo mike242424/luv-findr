@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import prisma from '@/lib/db';
 import { registerUserSchema } from '@/validation/registerUserSchema';
 
@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       dateOfBirth,
-      showGender,
       usersGender,
       interestedInGender,
       about,
@@ -23,11 +22,12 @@ export async function POST(req: NextRequest) {
       firstName,
       lastName,
       dateOfBirth,
-      showGender,
       usersGender,
       interestedInGender,
       about,
     });
+
+    const formattedDateOfBirth = new Date(dateOfBirth);
 
     if (!validate.success) {
       return NextResponse.json(
@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const salt = await bcypt.genSalt(12);
-    const hashedPassword = await bcypt.hash(password, salt);
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = await prisma.user.create({
       data: {
@@ -58,8 +58,7 @@ export async function POST(req: NextRequest) {
         password: hashedPassword,
         firstName,
         lastName,
-        dateOfBirth: validate.data.dateOfBirth,
-        showGender,
+        dateOfBirth: formattedDateOfBirth,
         usersGender,
         interestedInGender,
         about,
@@ -68,7 +67,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ newUser }, { status: 201 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },
