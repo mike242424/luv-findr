@@ -1,16 +1,6 @@
 'use client';
 
-type RegisterUserFormData = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  usersGender: Gender;
-  interestedInGender: Gender;
-  about: string;
-};
-
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -39,9 +29,24 @@ import {
 } from '@/components/ui/select';
 import Loading from '@/components/loading';
 
+type RegisterUserFormData = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  usersGender: Gender;
+  interestedInGender: Gender;
+  about: string;
+};
+
 const RegisterForm = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const [isGenderSelected, setIsGenderSelected] = useState(false);
+  const [isInterestedInGenderSelected, setIsInterestedInGenderSelected] =
+    useState(false);
+
   const form = useForm({
     resolver: zodResolver(registerUserSchema),
     defaultValues: {
@@ -108,7 +113,7 @@ const RegisterForm = () => {
                       Email:
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" />
+                      <Input {...field} type="text" placeholder="Email" />
                     </FormControl>
                     <FormMessage className="text-primary" />
                   </FormItem>
@@ -123,7 +128,11 @@ const RegisterForm = () => {
                       Password:
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="password" />
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="Password"
+                      />
                     </FormControl>
                     <FormMessage className="text-primary" />
                   </FormItem>
@@ -138,7 +147,7 @@ const RegisterForm = () => {
                       First Name:
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" />
+                      <Input {...field} type="text" placeholder="First Name" />
                     </FormControl>
                     <FormMessage className="text-primary" />
                   </FormItem>
@@ -153,7 +162,7 @@ const RegisterForm = () => {
                       Last Name:
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" />
+                      <Input {...field} type="text" placeholder="Last Name" />
                     </FormControl>
                     <FormMessage className="text-primary" />
                   </FormItem>
@@ -168,7 +177,11 @@ const RegisterForm = () => {
                       Date Of Birth (DD/MM/YYYY):
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" />
+                      <Input
+                        {...field}
+                        type="text"
+                        placeholder="Date Of Birth"
+                      />
                     </FormControl>
                     <FormMessage className="text-primary" />
                   </FormItem>
@@ -184,11 +197,16 @@ const RegisterForm = () => {
                     </FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={(value) =>
-                          field.onChange(value as Gender)
-                        }
+                        onValueChange={(value) => {
+                          field.onChange(value as Gender);
+                          setIsGenderSelected(true);
+                        }}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger
+                          className={
+                            isGenderSelected ? 'text-black' : 'text-gray-500'
+                          }
+                        >
                           <SelectValue placeholder="Select Gender" />
                         </SelectTrigger>
                         <SelectContent>
@@ -214,11 +232,18 @@ const RegisterForm = () => {
                     </FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={(value) =>
-                          field.onChange(value as Gender)
-                        }
+                        onValueChange={(value) => {
+                          field.onChange(value as Gender);
+                          setIsInterestedInGenderSelected(true);
+                        }}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger
+                          className={
+                            isInterestedInGenderSelected
+                              ? 'text-black'
+                              : 'text-gray-500'
+                          }
+                        >
                           <SelectValue placeholder="Select Gender" />
                         </SelectTrigger>
                         <SelectContent>
@@ -243,7 +268,11 @@ const RegisterForm = () => {
                       About Me:
                     </FormLabel>
                     <FormControl>
-                      <Textarea {...field} rows={10} />
+                      <Textarea
+                        {...field}
+                        rows={10}
+                        placeholder="About Me..."
+                      />
                     </FormControl>
                     <FormMessage className="text-primary" />
                   </FormItem>
