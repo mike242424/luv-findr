@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import Loading from '@/components/loading';
 
 const RegisterForm = () => {
   const queryClient = useQueryClient();
@@ -87,168 +88,184 @@ const RegisterForm = () => {
 
   return (
     <>
-      <Form {...form}>
-        <form
-          className="flex flex-col gap-3"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            name="email"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  Email:
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="password"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  Password:
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="password" />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="firstName"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  First Name:
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="lastName"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  Last Name:
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="dateOfBirth"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  Date Of Birth (DD/MM/YYYY):
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="usersGender"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  Gender:
-                </FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={(value) => field.onChange(value as Gender)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Gender" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {genderOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="interestedInGender"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  Interested In:
-                </FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={(value) => field.onChange(value as Gender)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Gender" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {genderOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="about"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold text-lg text-primary">
-                  About Me:
-                </FormLabel>
-                <FormControl>
-                  <Textarea {...field} rows={10} />
-                </FormControl>
-                <FormMessage className="text-primary" />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="font-bold mt-2">
-            Register
-          </Button>
-        </form>
-      </Form>
-      <div className="flex items-center gap-1 mt-3">
-        <p className="text-primary">Login</p>
-        <Link href="/">
-          <span className="text-primary font-bold underline">Here</span>
-        </Link>
-      </div>
+      {mutation.isPending ? (
+        <div>
+          <Loading />
+        </div>
+      ) : (
+        <div>
+          <Form {...form}>
+            <form
+              className="flex flex-col gap-3"
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Email:
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Password:
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} type="password" />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="firstName"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      First Name:
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="lastName"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Last Name:
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="dateOfBirth"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Date Of Birth (DD/MM/YYYY):
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} type="text" />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="usersGender"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Gender:
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value as Gender)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {genderOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="interestedInGender"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Interested In:
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value as Gender)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {genderOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="about"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-bold text-lg text-primary">
+                      About Me:
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea {...field} rows={10} />
+                    </FormControl>
+                    <FormMessage className="text-primary" />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className="font-bold mt-2"
+                disabled={mutation.isPending}
+              >
+                Register
+              </Button>
+            </form>
+          </Form>
+          <div className="flex items-center gap-1 mt-3">
+            <p className="text-primary">Login</p>
+            <Link href="/">
+              <span className="text-primary font-bold underline">Here</span>
+            </Link>
+          </div>
+        </div>
+      )}
     </>
   );
 };
