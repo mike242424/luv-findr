@@ -288,9 +288,10 @@ const RegisterForm = () => {
             </form>
           </Form>
           <div className="flex items-center gap-1 mt-3">
-            <p className="text-primary">Login</p>
             <Link href="/">
-              <span className="text-primary font-bold underline">Here</span>
+              <span className="text-primary font-bold hover:underline">
+                Login Here
+              </span>
             </Link>
           </div>
         </div>

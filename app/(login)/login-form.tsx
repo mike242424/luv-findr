@@ -113,9 +113,10 @@ const LoginForm = () => {
             </form>
           </Form>
           <div className="flex items-center gap-1 mt-3">
-            <p className="text-primary">Create account</p>
             <Link href="/register">
-              <span className="text-primary font-bold underline">Here</span>
+              <span className="text-primary font-bold hover:underline">
+                Create Account Here
+              </span>
             </Link>
           </div>
         </div>

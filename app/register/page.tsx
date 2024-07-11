@@ -2,6 +2,13 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import RegisterForm from './register-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import DateImgOne from '@/public/date_img_1.jpg';
+import DateImgTwo from '@/public/date_img_2.jpg';
+import DateImgThree from '@/public/date_img_3.jpg';
+import DateImgFour from '@/public/date_img_4.jpg';
+import DateImgFive from '@/public/date_img_5.jpg';
+import DateImgSix from '@/public/date_img_6.jpg';
+import Image from 'next/image';
 
 const Register = async () => {
   const session = await getServerSession();
@@ -11,17 +18,53 @@ const Register = async () => {
   }
 
   return (
-    <div className="flex items-center justify-center mt-20">
-      <Card className="w-full max-w-md bg-black p-6 rounded-lg border-2 border-primary">
-        <CardHeader>
-          <CardTitle className="text-center text-primary font-bold text-3xl">
-            Register
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <RegisterForm />
-        </CardContent>
-      </Card>
+    <div className="relative min-h-screen flex items-center justify-center bg-black">
+      <div className="absolute inset-0 grid grid-cols-2 grid-rows-3 z-0">
+        <Image
+          src={DateImgOne}
+          alt="Date Image One"
+          className="object-cover w-full h-full"
+          priority
+        />
+        <Image
+          src={DateImgTwo}
+          alt="Date Image Two"
+          className="object-cover w-full h-full"
+          priority
+        />
+        <Image
+          src={DateImgThree}
+          alt="Date Image Three"
+          className="object-cover w-full h-full"
+        />
+        <Image
+          src={DateImgFour}
+          alt="Date Image Four"
+          className="object-cover w-full h-full"
+        />
+        <Image
+          src={DateImgFive}
+          alt="Date Image Four"
+          className="object-cover w-full h-full"
+        />
+        <Image
+          src={DateImgSix}
+          alt="Date Image Four"
+          className="object-cover w-full h-full"
+        />
+      </div>
+      <div className="relative z-10 flex items-center justify-center my-28 w-full">
+        <Card className="w-full max-w-md p-6 rounded-lg border-2 border-primary bg-black">
+          <CardHeader>
+            <CardTitle className="text-center text-primary font-bold text-3xl">
+              Register
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RegisterForm />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
