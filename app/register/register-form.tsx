@@ -152,6 +152,7 @@ const RegisterForm = () => {
             </form>
           </Form>
           <div className="flex items-center gap-1 mt-3">
+            <p className="text-white">Already have an account?</p>
             <Link href="/">
               <span className="text-primary font-bold hover:underline">
                 Login Here

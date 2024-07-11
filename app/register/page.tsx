@@ -45,7 +45,7 @@ const Register = async () => {
         <Card className="w-full max-w-md p-6 rounded-lg border-2 border-primary bg-black">
           <CardHeader>
             <CardTitle className="text-center text-primary font-bold text-3xl">
-              Register
+              REGISTER
             </CardTitle>
           </CardHeader>
           <CardContent>
