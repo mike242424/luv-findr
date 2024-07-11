@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Loading from '@/components/loading';
+import { useEffect, useState } from 'react';
 
 type RegisterUserFormData = {
   email: string;
@@ -26,6 +27,7 @@ type RegisterUserFormData = {
 };
 
 const RegisterForm = () => {
+  const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -44,6 +46,13 @@ const RegisterForm = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       router.push('/');
     },
+    onError: (error: any) => {
+      if (error.response?.status === 409) {
+        setError('Email already in use. Please try a different one.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+    },
   });
 
   async function registerUser(values: RegisterUserFormData) {
@@ -52,8 +61,19 @@ const RegisterForm = () => {
   }
 
   function onSubmit(values: RegisterUserFormData) {
+    setError(null);
     mutation.mutate(values);
   }
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'email' && error) {
+        setError(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, error]);
 
   return (
     <>
@@ -128,6 +148,7 @@ const RegisterForm = () => {
               >
                 Register
               </Button>
+              {error && <p className="text-primary text-sm">{error}</p>}
             </form>
           </Form>
           <div className="flex items-center gap-1 mt-3">
