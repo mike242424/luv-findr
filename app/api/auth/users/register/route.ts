@@ -5,29 +5,13 @@ import { registerUserSchema } from '@/validation/registerUserSchema';
 
 export async function POST(req: NextRequest) {
   try {
-    const {
-      email,
-      password,
-      firstName,
-      lastName,
-      dateOfBirth,
-      usersGender,
-      interestedInGender,
-      about,
-    } = await req.json();
+    const { email, password, confirmPassword } = await req.json();
 
     const validate = registerUserSchema.safeParse({
       email,
       password,
-      firstName,
-      lastName,
-      dateOfBirth,
-      usersGender,
-      interestedInGender,
-      about,
+      confirmPassword,
     });
-
-    const formattedDateOfBirth = new Date(dateOfBirth);
 
     if (!validate.success) {
       return NextResponse.json(
@@ -56,17 +40,19 @@ export async function POST(req: NextRequest) {
       data: {
         email,
         password: hashedPassword,
-        firstName,
-        lastName,
-        dateOfBirth: formattedDateOfBirth,
-        usersGender,
-        interestedInGender,
-        about,
+        firstName: null,
+        lastName: null,
+        dateOfBirth: null,
+        usersGender: null,
+        interestedInGender: null,
+        about: null,
+        matches: [],
       },
     });
 
     return NextResponse.json({ newUser }, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },

@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { Gender } from '@prisma/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,55 +17,26 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import Loading from '@/components/loading';
 
 type RegisterUserFormData = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  usersGender: Gender;
-  interestedInGender: Gender;
-  about: string;
+  confirmPassword: string;
 };
 
 const RegisterForm = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [isGenderSelected, setIsGenderSelected] = useState(false);
-  const [isInterestedInGenderSelected, setIsInterestedInGenderSelected] =
-    useState(false);
 
   const form = useForm({
     resolver: zodResolver(registerUserSchema),
     defaultValues: {
       email: '',
       password: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: '',
-      usersGender: Gender.male,
-      interestedInGender: Gender.male,
-      about: '',
+      confirmPassword: '',
     },
   });
-
-  const genderOptions = [
-    { value: Gender.male, label: 'Male' },
-    { value: Gender.female, label: 'Female' },
-    { value: Gender.nonBinary, label: 'Non-binary' },
-    { value: Gender.other, label: 'Other' },
-    { value: Gender.preferNotToSay, label: 'Prefer not to say' },
-  ];
 
   const mutation = useMutation({
     mutationFn: registerUser,
@@ -83,12 +52,7 @@ const RegisterForm = () => {
   }
 
   function onSubmit(values: RegisterUserFormData) {
-    const transformedValues: RegisterUserFormData = {
-      ...values,
-      usersGender: values.usersGender as Gender,
-      interestedInGender: values.interestedInGender as Gender,
-    };
-    mutation.mutate(transformedValues);
+    mutation.mutate(values);
   }
 
   return (
@@ -139,139 +103,18 @@ const RegisterForm = () => {
                 )}
               />
               <FormField
-                name="firstName"
+                name="confirmPassword"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold text-lg text-primary">
-                      First Name:
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="First Name" />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="lastName"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Last Name:
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Last Name" />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="dateOfBirth"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Date Of Birth (DD/MM/YYYY):
+                      Confirm Password:
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        type="text"
-                        placeholder="Date Of Birth"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="usersGender"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Gender:
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value as Gender);
-                          setIsGenderSelected(true);
-                        }}
-                      >
-                        <SelectTrigger
-                          className={
-                            isGenderSelected ? 'text-black' : 'text-gray-500'
-                          }
-                        >
-                          <SelectValue placeholder="Select Gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {genderOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="interestedInGender"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Interested In:
-                    </FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value as Gender);
-                          setIsInterestedInGenderSelected(true);
-                        }}
-                      >
-                        <SelectTrigger
-                          className={
-                            isInterestedInGenderSelected
-                              ? 'text-black'
-                              : 'text-gray-500'
-                          }
-                        >
-                          <SelectValue placeholder="Select Gender" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {genderOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="about"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      About Me:
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        rows={10}
-                        placeholder="About Me..."
+                        type="password"
+                        placeholder="Confirm Password"
                       />
                     </FormControl>
                     <FormMessage className="text-primary" />
