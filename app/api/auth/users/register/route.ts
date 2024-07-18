@@ -162,7 +162,7 @@ export async function GET(req: NextRequest) {
         ? `${formatDateWithLeadingZeros(
             user.dateOfBirth.getMonth() + 1,
           )}/${formatDateWithLeadingZeros(
-            user.dateOfBirth.getDate(),
+            user.dateOfBirth.getDate() + 1,
           )}/${user.dateOfBirth.getFullYear()}`
         : '',
     };
