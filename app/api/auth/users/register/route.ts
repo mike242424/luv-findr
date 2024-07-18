@@ -5,6 +5,7 @@ import { registerUserSchema } from '@/validation/registerUserSchema';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { updateUserSchema } from '@/validation/updateUserSchema';
+import { formatDateWithLeadingZeros } from '@/lib/utils';
 
 export async function POST(req: NextRequest) {
   try {
@@ -120,6 +121,53 @@ export async function PUT(req: NextRequest) {
     });
 
     return NextResponse.json({ updatedUser }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal Server Error.' },
+      { status: 500 },
+    );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const session = await getServerSession({ req, ...authOptions });
+
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
+    }
+
+    const email = session?.user?.email!;
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        email: true,
+        firstName: true,
+        lastName: true,
+        dateOfBirth: true,
+        usersGender: true,
+        interestedInGender: true,
+        about: true,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found.' }, { status: 404 });
+    }
+
+    const formattedUser = {
+      ...user,
+      dateOfBirth: user.dateOfBirth
+        ? `${formatDateWithLeadingZeros(
+            user.dateOfBirth.getMonth() + 1,
+          )}/${formatDateWithLeadingZeros(
+            user.dateOfBirth.getDate(),
+          )}/${user.dateOfBirth.getFullYear()}`
+        : '',
+    };
+
+    return NextResponse.json({ user: formattedUser }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
