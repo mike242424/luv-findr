@@ -4,6 +4,7 @@ import prisma from '@/lib/db';
 import { registerUserSchema } from '@/validation/registerUserSchema';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { updateUserSchema } from '@/validation/updateUserSchema';
 
 export async function POST(req: NextRequest) {
   try {
@@ -78,12 +79,31 @@ export async function PUT(req: NextRequest) {
       about,
     } = await req.json();
 
-    const formattedDateOfBirth = new Date(
-      dateOfBirth.split('/').reverse().join('-'),
-    );
+    const validate = updateUserSchema.safeParse({
+      firstName,
+      lastName,
+      dateOfBirth,
+      usersGender,
+      interestedInGender,
+      about,
+    });
 
-    console.log(dateOfBirth);
-    console.log(formattedDateOfBirth);
+    if (!validate.success) {
+      return NextResponse.json(
+        { error: validate.error.errors[0].message },
+        { status: 400 },
+      );
+    }
+
+    const [month, day, year] = dateOfBirth.split('/');
+    const formattedDateOfBirth = new Date(`${year}-${month}-${day}`);
+
+    if (isNaN(formattedDateOfBirth.getTime())) {
+      return NextResponse.json(
+        { error: 'Invalid date format.' },
+        { status: 400 },
+      );
+    }
 
     const email = session?.user?.email!;
 

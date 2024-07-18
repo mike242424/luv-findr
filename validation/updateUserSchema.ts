@@ -15,8 +15,7 @@ const isValidDateString = (dateString: string): boolean => {
 
 const genderEnumSchema = z.enum(GenderEnum, {
   errorMap: () => ({
-    message:
-      'Must be one of the predefined gender options: male, female, nonBinary, other, or preferNotToSay.',
+    message: 'Must be one of the predefined gender options.',
   }),
 });
 

@@ -33,16 +33,13 @@ type UserDetailsFormData = {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  usersGender: Gender;
-  interestedInGender: Gender;
+  usersGender: Gender | string;
+  interestedInGender: Gender | string;
   about: string;
 };
 
 const UserDetailsForm = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isGenderSelected, setIsGenderSelected] = useState(false);
-  const [isInterestedInGenderSelected, setIsInterestedInGenderSelected] =
-    useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -52,8 +49,8 @@ const UserDetailsForm = () => {
       firstName: '',
       lastName: '',
       dateOfBirth: '',
-      usersGender: Gender.male,
-      interestedInGender: Gender.male,
+      usersGender: '',
+      interestedInGender: '',
       about: '',
     },
   });
@@ -158,14 +155,14 @@ const UserDetailsForm = () => {
                     </FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={(value) => {
-                          field.onChange(value as Gender);
-                          setIsGenderSelected(true);
-                        }}
+                        onValueChange={(value) =>
+                          field.onChange(value as Gender)
+                        }
+                        value={field.value}
                       >
                         <SelectTrigger
                           className={
-                            isGenderSelected ? 'text-black' : 'text-gray-500'
+                            field.value ? 'text-black' : 'text-gray-500'
                           }
                         >
                           <SelectValue placeholder="Select Gender" />
@@ -195,16 +192,14 @@ const UserDetailsForm = () => {
                     </FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={(value) => {
-                          field.onChange(value as Gender);
-                          setIsInterestedInGenderSelected(true);
-                        }}
+                        onValueChange={(value) =>
+                          field.onChange(value as Gender)
+                        }
+                        value={field.value}
                       >
                         <SelectTrigger
                           className={
-                            isInterestedInGenderSelected
-                              ? 'text-black'
-                              : 'text-gray-500'
+                            field.value ? 'text-black' : 'text-gray-500'
                           }
                         >
                           <SelectValue placeholder="Select Gender" />
