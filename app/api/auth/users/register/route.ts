@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import prisma from '@/lib/db';
 import { registerUserSchema } from '@/validation/registerUserSchema';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,6 +53,53 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ newUser }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal Server Error.' },
+      { status: 500 },
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const session = await getServerSession({ req, ...authOptions });
+
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
+    }
+
+    const {
+      firstName,
+      lastName,
+      dateOfBirth,
+      usersGender,
+      interestedInGender,
+      about,
+    } = await req.json();
+
+    const formattedDateOfBirth = new Date(
+      dateOfBirth.split('/').reverse().join('-'),
+    );
+
+    console.log(dateOfBirth);
+    console.log(formattedDateOfBirth);
+
+    const email = session?.user?.email!;
+
+    const updatedUser = await prisma.user.update({
+      where: { email },
+      data: {
+        firstName,
+        lastName,
+        dateOfBirth: formattedDateOfBirth,
+        usersGender,
+        interestedInGender,
+        about,
+      },
+    });
+
+    return NextResponse.json({ updatedUser }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

@@ -51,6 +51,7 @@ const LoginForm = () => {
       setIsLoading(false);
     } else {
       router.push('/dashboard');
+      router.refresh();
     }
   }
 

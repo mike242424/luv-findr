@@ -14,7 +14,12 @@ const Navbar = async () => {
           <h1>Luv Findr</h1>
         </div>
       </Link>
-      {session && <NavbarLogoutButton />}
+      {session && (
+        <div className="flex text-white justify-center items-center">
+          <Link href="/user-details">My Details</Link>
+          <NavbarLogoutButton />
+        </div>
+      )}
     </nav>
   );
 };
