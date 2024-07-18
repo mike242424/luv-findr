@@ -18,7 +18,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { Divide } from 'lucide-react';
 import Loading from '@/components/loading';
 
 const LoginForm = () => {
@@ -49,80 +48,71 @@ const LoginForm = () => {
         type: 'manual',
         message: 'Invalid email or password',
       });
+      setIsLoading(false);
     } else {
       router.push('/dashboard');
-      router.refresh();
     }
-    setIsLoading(false);
+  }
+
+  if (isLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   return (
-    <>
-      {isLoading ? (
-        <div>
-          <Loading />
-        </div>
-      ) : (
-        <div>
-          <Form {...form}>
-            <form
-              className="flex flex-col gap-3"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
-              <FormField
-                name="email"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Email:
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="text" placeholder="Email" />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="password"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Password:
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="password"
-                        placeholder="Password"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="font-bold mt-2"
-                disabled={isLoading}
-              >
-                Login
-              </Button>
-            </form>
-          </Form>
-          <div className="flex items-center gap-1 mt-3">
-            <p className="text-white">Need to create an account?</p>
-            <Link href="/register">
-              <span className="text-primary font-bold hover:underline">
-                Register Here
-              </span>
-            </Link>
-          </div>
-        </div>
-      )}
-    </>
+    <div>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-3"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            name="email"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Email:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" placeholder="Email" />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="password"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Password:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" placeholder="Password" />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="font-bold mt-2" disabled={isLoading}>
+            Login
+          </Button>
+        </form>
+      </Form>
+      <div className="flex items-center gap-1 mt-3">
+        <p className="text-white">Need to create an account?</p>
+        <Link href="/register">
+          <span className="text-primary font-bold hover:underline">
+            Register Here
+          </span>
+        </Link>
+      </div>
+    </div>
   );
 };
 
