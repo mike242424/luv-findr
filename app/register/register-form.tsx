@@ -56,7 +56,7 @@ const RegisterForm = () => {
   });
 
   async function registerUser(values: RegisterUserFormData) {
-    const response = await axios.post('/api/auth/users/register', values);
+    const response = await axios.post('/api/auth/register', values);
     return response.data;
   }
 

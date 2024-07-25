@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
-
+import { Gender } from '@prisma/client';
 import {
   Form,
   FormControl,
@@ -26,7 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Gender } from '@prisma/client';
 import { updateUserSchema } from '@/validation/updateUserSchema';
 
 type UserDetailsFormData = {
@@ -67,7 +66,7 @@ const UserDetailsForm = () => {
   useEffect(() => {
     async function fetchUserDetails() {
       try {
-        const response = await axios.get('/api/auth/users/register');
+        const response = await axios.get('/api/users/user');
         const userDetails = response.data.user;
 
         if (userDetails.dateOfBirth) {
@@ -99,7 +98,7 @@ const UserDetailsForm = () => {
   });
 
   async function updateUser(values: UserDetailsFormData) {
-    const response = await axios.put('/api/auth/users/register', values);
+    const response = await axios.put('/api/users', values);
     return response.data;
   }
 
