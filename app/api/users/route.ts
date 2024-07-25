@@ -123,7 +123,9 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ allUsers }, { status: 200 });
+    const shuffledUsers = allUsers.sort(() => Math.random() - 0.5);
+
+    return NextResponse.json({ allUsers: shuffledUsers }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error.' },
