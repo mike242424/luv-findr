@@ -99,8 +99,8 @@ export async function GET(req: NextRequest) {
     const allUsers = await prisma.user.findMany({
       where: {
         AND: [
-          { email: { not: email } }, // Exclude current user
-          { id: { notIn: matchedUserIds.concat(currentUser.id) } }, // Exclude matched users and current user
+          { email: { not: email } },
+          { id: { notIn: matchedUserIds.concat(currentUser.id) } },
           { firstName: { not: null } },
           { lastName: { not: null } },
           { dateOfBirth: { not: null } },
@@ -110,6 +110,9 @@ export async function GET(req: NextRequest) {
           { usersGender: currentUser.interestedInGender },
           { interestedInGender: currentUser.usersGender },
         ],
+      },
+      orderBy: {
+        id: 'asc',
       },
       select: {
         id: true,
