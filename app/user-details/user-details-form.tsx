@@ -34,8 +34,24 @@ type UserDetailsFormData = {
   dateOfBirth: string;
   usersGender: Gender | string;
   interestedInGender: Gender | string;
+  profession: string;
   about: string;
 };
+
+async function fetchUserDetails() {
+  const response = await axios.get('/api/users/user');
+  const userDetails = response.data.user;
+
+  if (userDetails.dateOfBirth) {
+    const date = new Date(userDetails.dateOfBirth);
+    userDetails.dateOfBirth = `${String(date.getMonth() + 1).padStart(
+      2,
+      '0',
+    )}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
+  }
+
+  return userDetails;
+}
 
 const UserDetailsForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +59,7 @@ const UserDetailsForm = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const form = useForm({
+  const form = useForm<UserDetailsFormData>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
       firstName: '',
@@ -51,6 +67,7 @@ const UserDetailsForm = () => {
       dateOfBirth: '',
       usersGender: '',
       interestedInGender: '',
+      profession: '',
       about: '',
     },
   });
@@ -64,19 +81,9 @@ const UserDetailsForm = () => {
   ];
 
   useEffect(() => {
-    async function fetchUserDetails() {
+    async function fetchUserDetailsAndSetForm() {
       try {
-        const response = await axios.get('/api/users/user');
-        const userDetails = response.data.user;
-
-        if (userDetails.dateOfBirth) {
-          const date = new Date(userDetails.dateOfBirth);
-          userDetails.dateOfBirth = `${String(date.getMonth() + 1).padStart(
-            2,
-            '0',
-          )}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
-        }
-
+        const userDetails = await fetchUserDetails();
         form.reset(userDetails);
         setLoading(false);
       } catch (error) {
@@ -86,13 +93,13 @@ const UserDetailsForm = () => {
       }
     }
 
-    fetchUserDetails();
+    fetchUserDetailsAndSetForm();
   }, [form]);
 
   const mutation = useMutation({
     mutationFn: updateUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['userDetails'] });
       router.push('/dashboard');
     },
   });
@@ -228,6 +235,23 @@ const UserDetailsForm = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                </FormControl>
+                <FormMessage className="text-primary">
+                  {fieldState.error?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="profession"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Profession:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" placeholder="Profession" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}

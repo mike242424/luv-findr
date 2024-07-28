@@ -46,12 +46,14 @@ export async function POST(req: NextRequest) {
         usersGender: null,
         interestedInGender: null,
         about: null,
+        profession: null,
         matches: [],
       },
     });
 
     return NextResponse.json({ newUser }, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },

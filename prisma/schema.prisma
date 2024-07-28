@@ -24,6 +24,7 @@ model User {
   dateOfBirth        DateTime?
   usersGender        Gender?
   interestedInGender Gender?
+  profession         String?
   about              String?
   matches            String[] @db.ObjectId
   createdAt          DateTime @default(now())

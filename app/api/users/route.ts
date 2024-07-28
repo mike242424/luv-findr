@@ -18,6 +18,7 @@ export async function PUT(req: NextRequest) {
       dateOfBirth,
       usersGender,
       interestedInGender,
+      profession,
       about,
     } = await req.json();
 
@@ -27,6 +28,7 @@ export async function PUT(req: NextRequest) {
       dateOfBirth,
       usersGender,
       interestedInGender,
+      profession,
       about,
     });
 
@@ -57,6 +59,7 @@ export async function PUT(req: NextRequest) {
         dateOfBirth: formattedDateOfBirth,
         usersGender,
         interestedInGender,
+        profession,
         about,
       },
     });
@@ -119,6 +122,7 @@ export async function GET(req: NextRequest) {
         firstName: true,
         lastName: true,
         dateOfBirth: true,
+        profession: true,
         about: true,
       },
     });

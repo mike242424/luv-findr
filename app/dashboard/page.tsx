@@ -24,7 +24,6 @@ const Dashboard = () => {
 
   async function getUsers() {
     const response = await axios.get('/api/users');
-    console.log(response.data);
     return response.data;
   }
 
@@ -58,20 +57,22 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col items-center mt-10">
       {currentUser ? (
-        <Card className="max-w-md w-full mb-4 text-white bg-black">
+        <Card className="max-w-md w-full mb-4 text-white bg-black border-2 border-primary">
           <CardHeader>
+            <CardTitle className="text-center text-primary font-bold text-3xl mb-8">
+              FIND YOUR MATCH
+            </CardTitle>
             <CardTitle>
               <strong>
-                {currentUser.firstName} {currentUser.lastName}
+                {currentUser.firstName}, {calculateAge(currentUser.dateOfBirth)}
               </strong>
             </CardTitle>
+            <p className="text-md mt-2">{currentUser.profession}</p>
           </CardHeader>
           <CardContent>
-            <strong>Age:</strong> {calculateAge(currentUser.dateOfBirth)}
-            <p>
-              <strong>About {currentUser.firstName}:</strong>{' '}
-              {currentUser.about}
-            </p>
+            <hr className="border-[1px] border-primary" />
+            <p className="my-4 text-md">{currentUser.about}</p>
+            <hr className="border-[1px] border-primary mb-2" />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button onClick={() => handleMatch(currentUser.id)}>Match</Button>

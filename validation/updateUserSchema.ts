@@ -27,5 +27,6 @@ export const updateUserSchema = z.object({
   }),
   usersGender: genderEnumSchema,
   interestedInGender: genderEnumSchema,
+  profession: z.string().nonempty('Profession information is required.'),
   about: z.string().nonempty('About me information is required.'),
 });

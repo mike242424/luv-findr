@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
         usersGender: true,
         interestedInGender: true,
         about: true,
+        profession: true,
         matches: true,
       },
     });
