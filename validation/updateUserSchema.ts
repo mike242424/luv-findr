@@ -19,6 +19,15 @@ const genderEnumSchema = z.enum(GenderEnum, {
   }),
 });
 
+const isValidUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export const updateUserSchema = z.object({
   firstName: z.string().nonempty('First Name is required.'),
   lastName: z.string().nonempty('Last Name is required.'),
@@ -29,4 +38,8 @@ export const updateUserSchema = z.object({
   interestedInGender: genderEnumSchema,
   profession: z.string().nonempty('Profession information is required.'),
   about: z.string().nonempty('About me information is required.'),
+  profilePhoto: z
+    .string()
+    .url('Profile photo URL must be a valid URL')
+    .optional(),
 });

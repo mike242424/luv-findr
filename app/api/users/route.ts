@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
-
 import { updateUserSchema } from '@/validation/updateUserSchema';
 import { authOptions } from '@/lib/authOptions';
+import { put } from '@vercel/blob';
+
+async function uploadFileToBlob(file: Buffer, filename: string) {
+  try {
+    const blob = await put(filename, file, {
+      access: 'public',
+    });
+    return blob.url;
+  } catch (error) {
+    console.error('Failed to upload file to Vercel Blob:', error);
+    throw new Error('Failed to upload file.');
+  }
+}
 
 export async function PUT(req: NextRequest) {
   try {
@@ -21,6 +33,7 @@ export async function PUT(req: NextRequest) {
       interestedInGender,
       profession,
       about,
+      profilePhoto,
     } = await req.json();
 
     const validate = updateUserSchema.safeParse({
@@ -31,6 +44,7 @@ export async function PUT(req: NextRequest) {
       interestedInGender,
       profession,
       about,
+      profilePhoto,
     });
 
     if (!validate.success) {
@@ -52,6 +66,15 @@ export async function PUT(req: NextRequest) {
 
     const email = session?.user?.email!;
 
+    let profilePhotoUrl: string | undefined;
+
+    if (profilePhoto instanceof Buffer) {
+      profilePhotoUrl = await uploadFileToBlob(
+        profilePhoto,
+        'profile_photo.jpg',
+      );
+    }
+
     const updatedUser = await prisma.user.update({
       where: { email },
       data: {
@@ -62,11 +85,13 @@ export async function PUT(req: NextRequest) {
         interestedInGender,
         profession,
         about,
+        profilePhoto: profilePhotoUrl || profilePhoto,
       },
     });
 
     return NextResponse.json({ updatedUser }, { status: 200 });
   } catch (error) {
+    console.error('Error updating user details:', error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },
@@ -125,6 +150,7 @@ export async function GET(req: NextRequest) {
         dateOfBirth: true,
         profession: true,
         about: true,
+        profilePhoto: true,
       },
     });
 

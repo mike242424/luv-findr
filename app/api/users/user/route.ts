@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
         about: true,
         profession: true,
         matches: true,
+        profilePhoto: true,
       },
     });
 
@@ -84,7 +85,6 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ user: updatedUser }, { status: 200 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },

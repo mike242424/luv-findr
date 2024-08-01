@@ -13,9 +13,10 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { calculateAge } from '@/lib/utils';
+import Image from 'next/image';
 
 const Dashboard = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: getUsers,
   });
@@ -57,17 +58,26 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col items-center mt-10">
       {currentUser ? (
-        <Card className="max-w-md w-full mb-4 text-white bg-black border-2 border-primary">
+        <Card className="max-w-md w-full text-white bg-black border-2 border-primary">
           <CardHeader>
-            <CardTitle className="text-center text-primary font-bold text-3xl mb-8">
+            <CardTitle className="text-center text-primary font-bold text-3xl">
               FIND YOUR MATCH
             </CardTitle>
+            <div className="flex justify-center py-10">
+              <Image
+                src={currentUser.profilePhoto}
+                alt={`${currentUser.firstName} profile photo`}
+                width={300}
+                height={300}
+                className="rounded-full"
+              />
+            </div>
             <CardTitle>
               <strong>
                 {currentUser.firstName}, {calculateAge(currentUser.dateOfBirth)}
               </strong>
             </CardTitle>
-            <p className="text-md mt-2">{currentUser.profession}</p>
+            <p className="text-md pt-3">{currentUser.profession}</p>
           </CardHeader>
           <CardContent>
             <hr className="border-[1px] border-primary" />

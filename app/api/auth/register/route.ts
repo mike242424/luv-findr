@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
         dateOfBirth: null,
         usersGender: null,
         interestedInGender: null,
+        profilePhoto: null,
         about: null,
         profession: null,
         matches: [],

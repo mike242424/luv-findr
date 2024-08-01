@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { updateUserSchema } from '@/validation/updateUserSchema';
+import Image from 'next/image';
 
 type UserDetailsFormData = {
   firstName: string;
@@ -36,6 +37,7 @@ type UserDetailsFormData = {
   interestedInGender: Gender | string;
   profession: string;
   about: string;
+  profilePhoto: string;
 };
 
 async function fetchUserDetails() {
@@ -56,6 +58,8 @@ async function fetchUserDetails() {
 const UserDetailsForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -69,6 +73,7 @@ const UserDetailsForm = () => {
       interestedInGender: '',
       profession: '',
       about: '',
+      profilePhoto: '',
     },
   });
 
@@ -85,9 +90,9 @@ const UserDetailsForm = () => {
       try {
         const userDetails = await fetchUserDetails();
         form.reset(userDetails);
+        setProfilePhotoUrl(userDetails.profilePhoto || '');
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching user details:', error);
         setError('Failed to load user details.');
         setLoading(false);
       }
@@ -107,6 +112,38 @@ const UserDetailsForm = () => {
   async function updateUser(values: UserDetailsFormData) {
     const response = await axios.put('/api/users', values);
     return response.data;
+  }
+
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch(
+          `/api/users/user/profile-photo/upload?filename=${file.name}`,
+          {
+            method: 'POST',
+            body: formData,
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to upload file.');
+        }
+
+        const result = await response.json();
+        if (result.url) {
+          setProfilePhotoUrl(result.url);
+          form.setValue('profilePhoto', result.url);
+        } else {
+          setError('Failed to upload profile photo.');
+        }
+      } catch (error) {
+        setError('Failed to upload profile photo.');
+      }
+    }
   }
 
   function onSubmit(values: UserDetailsFormData) {
@@ -276,14 +313,61 @@ const UserDetailsForm = () => {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="font-bold mt-2"
-            disabled={mutation.isPending}
-          >
-            Update
+          <FormField
+            name="profilePhoto"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <FormLabel className="font-bold text-lg text-primary">
+                      Profile Photo:
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-4">
+                        <label
+                          htmlFor="profilePhotoUpload"
+                          className="cursor-pointer bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-600 mt-2"
+                        >
+                          {selectedFile ? 'Change Photo' : 'Upload Photo'}
+                        </label>
+                        <input
+                          id="profilePhotoUpload"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            handleFileChange(e);
+                            setSelectedFile(
+                              e.target.files ? e.target.files[0] : null,
+                            );
+                          }}
+                          className="hidden"
+                        />
+                      </div>
+                    </FormControl>
+                  </div>
+                  {profilePhotoUrl && (
+                    <div className="flex-none">
+                      <Image
+                        src={profilePhotoUrl}
+                        alt="Profile Photo"
+                        width={75}
+                        height={75}
+                        className="rounded-full"
+                      />
+                    </div>
+                  )}
+                </div>
+                <FormMessage className="text-primary">
+                  {fieldState.error?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          {error && <p className="text-primary">{error}</p>}
+          <Button type="submit" disabled={mutation.isPending} className="mt-4">
+            {mutation.isPending ? 'Updating...' : 'Update Profile'}
           </Button>
-          {error && <p className="text-primary text-sm">{error}</p>}
         </form>
       </Form>
     </div>

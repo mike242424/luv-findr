@@ -25,6 +25,7 @@ model User {
   usersGender        Gender?
   interestedInGender Gender?
   profession         String?
+  profilePhoto       String? 
   about              String?
   matches            String[] @db.ObjectId
   createdAt          DateTime @default(now())
