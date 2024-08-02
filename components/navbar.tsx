@@ -9,14 +9,19 @@ const Navbar = async () => {
   return (
     <nav className="flex justify-between bg-primary p-4">
       <Link href="/" className="font-bold text-4xl text-primary-foreground">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 hover:text-black">
           <Heart size={35} />
           <h1>Luv Findr</h1>
         </div>
       </Link>
       {session && (
         <div className="flex text-white justify-center items-center">
-          <Link href="/user-details">My Details</Link>
+          <Link href="/" className="mr-4 hover:text-black">
+            My Matches
+          </Link>
+          <Link className="hover:text-black" href="/user-details">
+            My Details
+          </Link>
           <NavbarLogoutButton />
         </div>
       )}
