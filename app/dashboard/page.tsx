@@ -14,7 +14,7 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { calculateAge } from '@/lib/utils';
-import NoUsersFound from './no-users-found';
+import NoUsersFound from '../../components/no-users-found';
 import ProfileIncomplete from './profile-incomplete';
 
 const Dashboard = () => {
@@ -77,7 +77,11 @@ const Dashboard = () => {
     !userDetailsData.user.profilePhoto;
 
   if (profileIncomplete) {
-    return <ProfileIncomplete />;
+    return (
+      <div className="flex flex-col items-center mt-10">
+        <ProfileIncomplete />
+      </div>
+    );
   }
 
   const currentMatch = usersData?.allUsers[currentIndex];

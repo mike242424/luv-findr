@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
-
 import { formatDateWithLeadingZeros } from '@/lib/utils';
 import { authOptions } from '@/lib/authOptions';
 
@@ -76,14 +75,23 @@ export async function PATCH(req: NextRequest) {
 
     const updatedMatches = [...currentUser.matches, matchUserId];
 
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: { email },
       data: {
         matches: updatedMatches,
       },
     });
 
-    return NextResponse.json({ user: updatedUser }, { status: 200 });
+    const matchedUser = await prisma.user.findUnique({
+      where: { id: matchUserId },
+      select: { matches: true },
+    });
+
+    if (matchedUser && matchedUser.matches.includes(currentUser.id)) {
+      return NextResponse.json({ matchSuccess: true }, { status: 200 });
+    }
+
+    return NextResponse.json({ matchSuccess: false }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error.' },

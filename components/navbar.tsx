@@ -16,7 +16,7 @@ const Navbar = async () => {
       </Link>
       {session && (
         <div className="flex text-white justify-center items-center">
-          <Link href="/" className="mr-4 hover:text-black">
+          <Link href="/matches" className="mr-4 hover:text-black">
             My Matches
           </Link>
           <Link className="hover:text-black" href="/user-details">
