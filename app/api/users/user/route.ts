@@ -99,3 +99,59 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await getServerSession({ req, ...authOptions });
+
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
+    }
+
+    const email = session?.user?.email!;
+    const { matchUserId } = await req.json();
+
+    const currentUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!currentUser) {
+      return NextResponse.json({ error: 'User not found.' }, { status: 404 });
+    }
+
+    const updatedMatches = currentUser.matches.filter(
+      (id) => id !== matchUserId,
+    );
+
+    await prisma.user.update({
+      where: { email },
+      data: {
+        matches: updatedMatches,
+      },
+    });
+
+    const matchedUser = await prisma.user.findUnique({
+      where: { id: matchUserId },
+    });
+
+    if (matchedUser) {
+      const updatedMatchedUserMatches = matchedUser.matches.filter(
+        (id) => id !== currentUser.id,
+      );
+
+      await prisma.user.update({
+        where: { id: matchUserId },
+        data: {
+          matches: updatedMatchedUserMatches,
+        },
+      });
+    }
+
+    return NextResponse.json({ unmatchSuccess: true }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal Server Error.' },
+      { status: 500 },
+    );
+  }
+}

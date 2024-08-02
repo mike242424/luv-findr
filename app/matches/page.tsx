@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import Loading from '@/components/loading';
@@ -22,9 +22,31 @@ async function getMatches() {
 }
 
 const MatchesPage = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['matches'],
     queryFn: getMatches,
+  });
+
+  async function unmatchUser(matchUserId: string) {
+    try {
+      const response = await axios.delete('/api/users/user', {
+        data: { matchUserId },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error unmatching user:', error);
+      throw error;
+    }
+  }
+
+  const unmatchMutation = useMutation({
+    mutationFn: (userId: string) => unmatchUser(userId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error: any) => {
+      console.error('Error unmatching user:', error);
+    },
   });
 
   if (isLoading) {
@@ -66,7 +88,12 @@ const MatchesPage = () => {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button>Message</Button>
-              <Button>Unmatch</Button>
+              <Button
+                onClick={() => unmatchMutation.mutate(user.id)}
+                disabled={unmatchMutation.isPending}
+              >
+                {unmatchMutation.isPending ? 'Unmatching...' : 'Unmatch'}
+              </Button>
             </CardFooter>
           </Card>
         ))
