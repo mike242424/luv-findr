@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import Loading from '@/components/loading';
@@ -13,18 +14,30 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { calculateAge } from '@/lib/utils';
-import Image from 'next/image';
+import NoUsersFound from './no-users-found';
+import ProfileIncomplete from './profile-incomplete';
 
 const Dashboard = () => {
-  const { data, isLoading } = useQuery({
+  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
     queryKey: ['users'],
     queryFn: getUsers,
   });
+
+  const { data: userDetailsData, isLoading: isLoadingUserDetailsData } =
+    useQuery({
+      queryKey: ['userDetails'],
+      queryFn: getUserDetails,
+    });
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   async function getUsers() {
     const response = await axios.get('/api/users');
+    return response.data;
+  }
+
+  async function getUserDetails() {
+    const response = await axios.get('/api/users/user');
     return response.data;
   }
 
@@ -49,15 +62,29 @@ const Dashboard = () => {
     addMatchMutation.mutate(personId);
   }
 
-  if (isLoading) {
+  if (isLoadingUsers || isLoadingUserDetailsData) {
     return <Loading />;
   }
 
-  const currentUser = data?.allUsers[currentIndex];
+  const profileIncomplete =
+    !userDetailsData.user.firstName ||
+    !userDetailsData.user.lastName ||
+    !userDetailsData.user.dateOfBirth ||
+    !userDetailsData.user.usersGender ||
+    !userDetailsData.user.interestedInGender ||
+    !userDetailsData.user.profession ||
+    !userDetailsData.user.about ||
+    !userDetailsData.user.profilePhoto;
+
+  if (profileIncomplete) {
+    return <ProfileIncomplete />;
+  }
+
+  const currentMatch = usersData?.allUsers[currentIndex];
 
   return (
     <div className="flex flex-col items-center mt-10">
-      {currentUser ? (
+      {currentMatch ? (
         <Card className="max-w-md w-full my-12 text-white bg-black border-2 border-primary">
           <CardHeader>
             <CardTitle className="text-center text-primary font-bold text-3xl">
@@ -65,8 +92,8 @@ const Dashboard = () => {
             </CardTitle>
             <div className="flex justify-center py-10">
               <Image
-                src={currentUser.profilePhoto}
-                alt={`${currentUser.firstName} profile photo`}
+                src={currentMatch.profilePhoto}
+                alt={`${currentMatch.firstName} profile photo`}
                 width={300}
                 height={300}
                 className="rounded-full"
@@ -74,23 +101,24 @@ const Dashboard = () => {
             </div>
             <CardTitle>
               <strong>
-                {currentUser.firstName}, {calculateAge(currentUser.dateOfBirth)}
+                {currentMatch.firstName},{' '}
+                {calculateAge(currentMatch.dateOfBirth)}
               </strong>
             </CardTitle>
-            <p className="text-md pt-3">{currentUser.profession}</p>
+            <p className="text-md pt-3">{currentMatch.profession}</p>
           </CardHeader>
           <CardContent>
             <hr className="border-[1px] border-primary" />
-            <p className="my-4 text-md">{currentUser.about}</p>
+            <p className="my-4 text-md">{currentMatch.about}</p>
             <hr className="border-[1px] border-primary mb-2" />
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button onClick={() => handleMatch(currentUser.id)}>Match</Button>
+            <Button onClick={() => handleMatch(currentMatch.id)}>Match</Button>
             <Button onClick={handleNext}>Skip</Button>
           </CardFooter>
         </Card>
       ) : (
-        <p className="text-white">No Users Found</p>
+        <NoUsersFound />
       )}
     </div>
   );
