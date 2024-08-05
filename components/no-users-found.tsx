@@ -16,11 +16,6 @@ const NoUsersFound = () => {
             There are no more users to show. Check back later or update your
             profile to see new matches.
           </p>
-          <div className="flex justify-center my-4">
-            <Link href="/user-details">
-              <Button>Update Profile</Button>
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </div>

@@ -1,8 +1,11 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
+import { User } from '@prisma/client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import Image from 'next/image';
+import { calculateAge } from '@/lib/utils';
 import Loading from '@/components/loading';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,9 +15,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
-import { User } from '@prisma/client';
 import NoUsersFound from '../../components/no-users-found';
-import { calculateAge } from '@/lib/utils';
 
 async function getMatches() {
   const response = await axios.get('/api/users/user/matches');
@@ -87,7 +88,9 @@ const MatchesPage = () => {
               <hr className="border-[1px] border-primary mb-2" />
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button>Message</Button>
+              <Link href={`/matches/messages/${user.id}`}>
+                <Button>Message</Button>
+              </Link>
               <Button
                 onClick={() => unmatchMutation.mutate(user.id)}
                 disabled={unmatchMutation.isPending}
