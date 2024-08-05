@@ -77,17 +77,13 @@ const Dashboard = () => {
     !userDetailsData.user.profilePhoto;
 
   if (profileIncomplete) {
-    return (
-      <div className="flex flex-col items-center mt-10">
-        <ProfileIncomplete />
-      </div>
-    );
+    return <ProfileIncomplete />;
   }
 
   const currentMatch = usersData?.allUsers[currentIndex];
 
   return (
-    <div className="flex flex-col items-center mt-10">
+    <div className="flex flex-col items-center">
       {currentMatch ? (
         <Card className="max-w-md w-full my-12 text-white bg-black border-2 border-primary">
           <CardHeader>
