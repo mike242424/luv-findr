@@ -12,23 +12,44 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 });
     }
 
+    const url = new URL(req.url);
+    const userId = url.searchParams.get('userId');
     const email = session?.user?.email!;
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-      select: {
-        email: true,
-        firstName: true,
-        lastName: true,
-        dateOfBirth: true,
-        usersGender: true,
-        interestedInGender: true,
-        about: true,
-        profession: true,
-        matches: true,
-        profilePhoto: true,
-      },
-    });
+    let user;
+    if (userId) {
+      user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          email: true,
+          firstName: true,
+          lastName: true,
+          dateOfBirth: true,
+          usersGender: true,
+          interestedInGender: true,
+          about: true,
+          profession: true,
+          matches: true,
+          profilePhoto: true,
+        },
+      });
+    } else if (email) {
+      user = await prisma.user.findUnique({
+        where: { email },
+        select: {
+          email: true,
+          firstName: true,
+          lastName: true,
+          dateOfBirth: true,
+          usersGender: true,
+          interestedInGender: true,
+          about: true,
+          profession: true,
+          matches: true,
+          profilePhoto: true,
+        },
+      });
+    }
 
     if (!user) {
       return NextResponse.json({ error: 'User not found.' }, { status: 404 });
