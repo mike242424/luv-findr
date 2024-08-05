@@ -130,23 +130,6 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
-    const matchedUser = await prisma.user.findUnique({
-      where: { id: matchUserId },
-    });
-
-    if (matchedUser) {
-      const updatedMatchedUserMatches = matchedUser.matches.filter(
-        (id) => id !== currentUser.id,
-      );
-
-      await prisma.user.update({
-        where: { id: matchUserId },
-        data: {
-          matches: updatedMatchedUserMatches,
-        },
-      });
-    }
-
     return NextResponse.json({ unmatchSuccess: true }, { status: 200 });
   } catch (error) {
     return NextResponse.json(

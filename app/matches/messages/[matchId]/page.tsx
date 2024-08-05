@@ -50,7 +50,11 @@ const MessagesPage = ({
 
   return (
     <div className="flex flex-col items-center justify-center h-screen mx-10">
-      <div className="flex flex-col w-full sm:w-10/12 md:w-8/12 lg:w-6/12 border-2 border-primary rounded-lg p-10 overflow-y-auto">
+      <div
+        className={`flex flex-col w-full sm:w-10/12 md:w-8/12 lg:w-6/12 ${
+          messages.length > 0 ? 'border-2 border-primary rounded-lg' : ''
+        } p-10 overflow-y-auto`}
+      >
         {messages && messages.length > 0 ? (
           messages.map((message: any) => (
             <div

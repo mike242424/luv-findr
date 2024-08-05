@@ -57,53 +57,55 @@ const MatchesPage = () => {
   const matchedUsers = data?.matchedUsers || [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-28 mx-10 gap-6">
+    <>
       {matchedUsers.length > 0 ? (
         matchedUsers.map((user: User) => (
-          <Card
+          <div
             key={user.id}
-            className="max-w-md w-full text-white bg-black border-2 border-primary"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-28 mx-10 gap-6"
           >
-            <CardHeader>
-              <div className="flex justify-center py-10">
-                <Image
-                  src={user.profilePhoto!}
-                  alt={`${user.firstName} profile photo`}
-                  width={300}
-                  height={300}
-                  className="rounded-full"
-                />
-              </div>
-              <CardTitle>
-                <strong>
-                  {user.firstName} {user.lastName},{' '}
-                  {calculateAge(user.dateOfBirth?.toString() || null)}
-                </strong>
-              </CardTitle>
-              <p className="text-md pt-3">{user.profession}</p>
-            </CardHeader>
-            <CardContent>
-              <hr className="border-[1px] border-primary" />
-              <p className="my-4 text-md">{user.about}</p>
-              <hr className="border-[1px] border-primary mb-2" />
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Link href={`/matches/messages/${user.id}`}>
-                <Button>Message</Button>
-              </Link>
-              <Button
-                onClick={() => unmatchMutation.mutate(user.id)}
-                disabled={unmatchMutation.isPending}
-              >
-                {unmatchMutation.isPending ? 'Unmatching...' : 'Unmatch'}
-              </Button>
-            </CardFooter>
-          </Card>
+            <Card className="max-w-md w-full text-white bg-black border-2 border-primary">
+              <CardHeader>
+                <div className="flex justify-center py-10">
+                  <Image
+                    src={user.profilePhoto!}
+                    alt={`${user.firstName} profile photo`}
+                    width={300}
+                    height={300}
+                    className="rounded-full"
+                  />
+                </div>
+                <CardTitle>
+                  <strong>
+                    {user.firstName} {user.lastName},{' '}
+                    {calculateAge(user.dateOfBirth?.toString() || null)}
+                  </strong>
+                </CardTitle>
+                <p className="text-md pt-3">{user.profession}</p>
+              </CardHeader>
+              <CardContent>
+                <hr className="border-[1px] border-primary" />
+                <p className="my-4 text-md">{user.about}</p>
+                <hr className="border-[1px] border-primary mb-2" />
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Link href={`/matches/messages/${user.id}`}>
+                  <Button>Message</Button>
+                </Link>
+                <Button
+                  onClick={() => unmatchMutation.mutate(user.id)}
+                  disabled={unmatchMutation.isPending}
+                >
+                  {unmatchMutation.isPending ? 'Unmatching...' : 'Unmatch'}
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
         ))
       ) : (
         <NoUsersFound />
       )}
-    </div>
+    </>
   );
 };
 
