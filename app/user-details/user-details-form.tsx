@@ -33,6 +33,8 @@ type UserDetailsFormData = {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  city: string;
+  state: string;
   usersGender: Gender | string;
   interestedInGender: Gender | string;
   profession: string;
@@ -69,6 +71,8 @@ const UserDetailsForm = () => {
       firstName: '',
       lastName: '',
       dateOfBirth: '',
+      city: '',
+      state: '',
       usersGender: '',
       interestedInGender: '',
       profession: '',
@@ -206,6 +210,40 @@ const UserDetailsForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input {...field} type="text" placeholder="MM/DD/YYYY" />
+                </FormControl>
+                <FormMessage className="text-primary">
+                  {fieldState.error?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="city"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  City:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" placeholder="City" />
+                </FormControl>
+                <FormMessage className="text-primary">
+                  {fieldState.error?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="state"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  State:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="text" placeholder="State" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}

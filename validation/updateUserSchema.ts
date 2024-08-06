@@ -34,6 +34,8 @@ export const updateUserSchema = z.object({
   dateOfBirth: z.string().refine(isValidDateString, {
     message: 'Date must be in the format of DD/MM/YYYY.',
   }),
+  city: z.string().nonempty('City is required.'),
+  state: z.string().nonempty('State is required.'),
   usersGender: genderEnumSchema,
   interestedInGender: genderEnumSchema,
   profession: z.string().nonempty('Profession information is required.'),

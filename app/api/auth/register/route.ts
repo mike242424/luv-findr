@@ -43,6 +43,8 @@ export async function POST(req: NextRequest) {
         firstName: null,
         lastName: null,
         dateOfBirth: null,
+        city: null,
+        state: null,
         usersGender: null,
         interestedInGender: null,
         profilePhoto: null,

@@ -22,6 +22,8 @@ model User {
   firstName          String?
   lastName           String?
   dateOfBirth        DateTime?
+  city               String?
+  state              String?
   usersGender        Gender?
   interestedInGender Gender?
   profession         String?

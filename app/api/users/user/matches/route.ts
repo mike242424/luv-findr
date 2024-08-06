@@ -40,6 +40,8 @@ export async function GET(req: NextRequest) {
         profession: true,
         about: true,
         dateOfBirth: true,
+        city: true,
+        state: true,
       },
     });
 
