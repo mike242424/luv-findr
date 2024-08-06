@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
-import { formatDateWithLeadingZeros } from '@/lib/utils';
+import prisma from '@/lib/db';
+import { formatDateWithLeadingZeros } from '@/lib/dateUtils';
 import { authOptions } from '@/lib/authOptions';
 
 export async function GET(req: NextRequest) {

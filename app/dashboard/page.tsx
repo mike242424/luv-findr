@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import Loading from '@/components/loading';
+import { getUserDetails, getUsers } from '@/lib/userApi';
+import { calculateAge } from '@/lib/dateUtils';
+import LoadingSpinner from '@/components/loading';
+import NoUsersFound from '../../components/no-users-found';
+import ProfileIncompletePage from './profile-incomplete';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,9 +17,6 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
-import { calculateAge } from '@/lib/utils';
-import NoUsersFound from '../../components/no-users-found';
-import ProfileIncomplete from './profile-incomplete';
 
 const Dashboard = () => {
   const { data: usersData, isLoading: isLoadingUsers } = useQuery({
@@ -30,16 +31,6 @@ const Dashboard = () => {
     });
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  async function getUsers() {
-    const response = await axios.get('/api/users');
-    return response.data;
-  }
-
-  async function getUserDetails() {
-    const response = await axios.get('/api/users/user');
-    return response.data;
-  }
 
   const addMatchMutation = useMutation({
     mutationFn: async (matchUserId: string) => {
@@ -63,7 +54,7 @@ const Dashboard = () => {
   }
 
   if (isLoadingUsers || isLoadingUserDetailsData) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   const profileIncomplete =
@@ -77,7 +68,7 @@ const Dashboard = () => {
     !userDetailsData.user.profilePhoto;
 
   if (profileIncomplete) {
-    return <ProfileIncomplete />;
+    return <ProfileIncompletePage />;
   }
 
   const currentMatch = usersData?.allUsers[currentIndex];

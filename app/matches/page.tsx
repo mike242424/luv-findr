@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { User } from '@prisma/client';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { calculateAge } from '@/lib/utils';
-import Loading from '@/components/loading';
+import { getMatches, unmatchUser } from '@/lib/matchesApi';
+import { calculateAge } from '@/lib/dateUtils';
+import LoadingSpinner from '@/components/loading';
+import NoUsersFound from '../../components/no-users-found';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -15,30 +16,12 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
-import NoUsersFound from '../../components/no-users-found';
-
-async function getMatches() {
-  const response = await axios.get('/api/users/user/matches');
-  return response.data;
-}
 
 const MatchesPage = () => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['matches'],
     queryFn: getMatches,
   });
-
-  async function unmatchUser(matchUserId: string) {
-    try {
-      const response = await axios.delete('/api/users/user', {
-        data: { matchUserId },
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error unmatching user:', error);
-      throw error;
-    }
-  }
 
   const unmatchMutation = useMutation({
     mutationFn: (userId: string) => unmatchUser(userId),
@@ -51,7 +34,7 @@ const MatchesPage = () => {
   });
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   const matchedUsers = data?.matchedUsers || [];

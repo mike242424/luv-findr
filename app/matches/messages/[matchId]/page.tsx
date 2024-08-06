@@ -3,30 +3,14 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { fetchMessages, sendMessage } from '@/lib/messageApi';
+import { fetchUserDetails } from '@/lib/userApi';
+import { calculateAge } from '@/lib/dateUtils';
+import LoadingSpinner from '@/components/loading';
+import NoMessagesFoundPage from './no-messages-found';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Loading from '@/components/loading';
-import NoMessagesFoundPage from './no-messages-found';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { calculateAge } from '@/lib/utils';
-
-export const fetchUserDetails = async (userId: string) => {
-  const response = await axios.get(`/api/users/user`, {
-    params: { userId },
-  });
-  return response.data;
-};
-
-const fetchMessages = async (matchId: string) => {
-  const response = await axios.get(`/api/users/user/messages/${matchId}`);
-  return response.data;
-};
-
-const sendMessage = async (data: { matchId: string; content: string }) => {
-  const response = await axios.post(`/api/users/user/messages`, data);
-  return response.data;
-};
 
 const MessagesPage = ({
   params: { matchId },
@@ -75,7 +59,7 @@ const MessagesPage = ({
   };
 
   if (messagesLoading || userDetailsLoading) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   return (

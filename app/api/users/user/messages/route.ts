@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
+import prisma from '@/lib/db';
 import { authOptions } from '@/lib/authOptions';
 
 export async function POST(req: NextRequest) {
@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
   }
 
   const session = await getServerSession({ req, ...authOptions });
+
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -46,7 +47,6 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json(message, { status: 201 });
   } catch (error) {
-    console.error('Error creating message:', error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },

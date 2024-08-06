@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Gender } from '@prisma/client';
+import { fetchUserDetailsAndFormatDate, updateUser } from '@/lib/userApi';
+import { updateUserSchema } from '@/validation/updateUserSchema';
+import { UserDetailsFormData } from '@/types/userDetailsFormData';
 import {
   Form,
   FormControl,
@@ -17,7 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Loading from '@/components/loading';
+import LoadingSpinner from '@/components/loading';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -26,36 +29,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { updateUserSchema } from '@/validation/updateUserSchema';
-import Image from 'next/image';
-
-type UserDetailsFormData = {
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  city: string;
-  state: string;
-  usersGender: Gender | string;
-  interestedInGender: Gender | string;
-  profession: string;
-  about: string;
-  profilePhoto: string;
-};
-
-async function fetchUserDetails() {
-  const response = await axios.get('/api/users/user');
-  const userDetails = response.data.user;
-
-  if (userDetails.dateOfBirth) {
-    const date = new Date(userDetails.dateOfBirth);
-    userDetails.dateOfBirth = `${String(date.getMonth() + 1).padStart(
-      2,
-      '0',
-    )}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
-  }
-
-  return userDetails;
-}
 
 const UserDetailsForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -92,7 +65,7 @@ const UserDetailsForm = () => {
   useEffect(() => {
     async function fetchUserDetailsAndSetForm() {
       try {
-        const userDetails = await fetchUserDetails();
+        const userDetails = await fetchUserDetailsAndFormatDate();
         form.reset(userDetails);
         setProfilePhotoUrl(userDetails.profilePhoto || '');
         setLoading(false);
@@ -112,11 +85,6 @@ const UserDetailsForm = () => {
       router.push('/dashboard');
     },
   });
-
-  async function updateUser(values: UserDetailsFormData) {
-    const response = await axios.put('/api/users', values);
-    return response.data;
-  }
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
@@ -156,7 +124,7 @@ const UserDetailsForm = () => {
   }
 
   if (loading) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   return (

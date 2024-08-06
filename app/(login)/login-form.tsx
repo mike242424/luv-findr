@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUserSchema } from '@/validation/loginUserSchema';
+import LoadingSpinner from '@/components/loading';
 import {
   Form,
   FormControl,
@@ -17,8 +19,6 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Link from 'next/link';
-import Loading from '@/components/loading';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -58,7 +58,7 @@ const LoginForm = () => {
   if (isLoading) {
     return (
       <div>
-        <Loading />
+        <LoadingSpinner />
       </div>
     );
   }

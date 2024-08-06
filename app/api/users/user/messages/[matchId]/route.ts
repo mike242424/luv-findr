@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
+import prisma from '@/lib/db';
 import { authOptions } from '@/lib/authOptions';
 
 export async function GET(
@@ -46,7 +46,6 @@ export async function GET(
     });
     return NextResponse.json(messages);
   } catch (error) {
-    console.error('Error fetching messages:', error);
     return NextResponse.json(
       { error: 'Internal Server Error.' },
       { status: 500 },

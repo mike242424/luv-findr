@@ -1,32 +1,12 @@
 import z from 'zod';
-
-const GenderEnum = [
-  'male',
-  'female',
-  'nonBinary',
-  'other',
-  'preferNotToSay',
-] as const;
-
-const isValidDateString = (dateString: string): boolean => {
-  const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
-  return datePattern.test(dateString);
-};
+import { isValidDateString } from '@/lib/dateUtils';
+import { GenderEnum } from '@/types/genderEnum';
 
 const genderEnumSchema = z.enum(GenderEnum, {
   errorMap: () => ({
     message: 'Must be one of the predefined gender options.',
   }),
 });
-
-const isValidUrl = (url: string): boolean => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 export const updateUserSchema = z.object({
   firstName: z.string().nonempty('First Name is required.'),

@@ -1,14 +1,14 @@
 import { getServerSession } from 'next-auth';
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import RegisterForm from './register-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import DateImgOne from '@/public/date_img_1.jpg';
 import DateImgTwo from '@/public/date_img_2.jpg';
 import DateImgThree from '@/public/date_img_3.jpg';
 import DateImgFour from '@/public/date_img_4.jpg';
-import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const Register = async () => {
+const RegisterPage = async () => {
   const session = await getServerSession();
 
   if (session) {
@@ -57,4 +57,4 @@ const Register = async () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

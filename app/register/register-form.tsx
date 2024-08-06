@@ -2,11 +2,14 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerUserSchema } from '@/validation/registerUserSchema';
+import { registerUser } from '@/lib/authApi';
+import { RegisterUserFormData } from '@/types/registerUserFormData';
+import LoadingSpinner from '@/components/loading';
 import {
   Form,
   FormControl,
@@ -17,14 +20,6 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Loading from '@/components/loading';
-import { useEffect, useState } from 'react';
-
-type RegisterUserFormData = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | null>(null);
@@ -55,11 +50,6 @@ const RegisterForm = () => {
     },
   });
 
-  async function registerUser(values: RegisterUserFormData) {
-    const response = await axios.post('/api/auth/register', values);
-    return response.data;
-  }
-
   function onSubmit(values: RegisterUserFormData) {
     setError(null);
     mutation.mutate(values);
@@ -79,7 +69,7 @@ const RegisterForm = () => {
     <>
       {mutation.isPending ? (
         <div>
-          <Loading />
+          <LoadingSpinner />
         </div>
       ) : (
         <div>

@@ -8,7 +8,7 @@ import DateImgTwo from '@/public/date_img_2.jpg';
 import DateImgThree from '@/public/date_img_3.jpg';
 import DateImgFour from '@/public/date_img_4.jpg';
 
-const Login = async () => {
+const LoginPage = async () => {
   const session = await getServerSession();
 
   if (session) {
@@ -57,4 +57,4 @@ const Login = async () => {
   );
 };
 
-export default Login;
+export default LoginPage;

@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
-const NoUsersFound = () => {
+const NoUsersFoundPage = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-16 text-white">
       <Card className="max-w-md w-full my-12 text-white bg-black border-2 border-primary">
@@ -20,4 +20,4 @@ const NoUsersFound = () => {
   );
 };
 
-export default NoUsersFound;
+export default NoUsersFoundPage;

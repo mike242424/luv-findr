@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/navbar';
 import QueryClientContextProvider from '@/contexts/query-client-provider';
+import Navbar from '@/components/navbar';
 
 export const metadata: Metadata = {
   title: 'Luv Findr',
