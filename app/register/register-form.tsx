@@ -23,8 +23,9 @@ import { Input } from '@/components/ui/input';
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | null>(null);
-  const queryClient = useQueryClient();
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const form = useForm({
     resolver: zodResolver(registerUserSchema),
@@ -39,7 +40,7 @@ const RegisterForm = () => {
     mutationFn: registerUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      router.push('/');
+      setIsRedirecting(true);
     },
     onError: (error: any) => {
       if (error.response?.status === 409) {
@@ -50,104 +51,96 @@ const RegisterForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (isRedirecting) {
+      router.push('/');
+    }
+  }, [isRedirecting, router]);
+
   function onSubmit(values: RegisterUserFormData) {
     setError(null);
     mutation.mutate(values);
   }
 
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === 'email' && error) {
-        setError(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form, error]);
+  if (isRedirecting || mutation.isPending) {
+    return <LoadingSpinner />;
+  }
 
   return (
-    <>
-      {mutation.isPending ? (
-        <div>
-          <LoadingSpinner />
-        </div>
-      ) : (
-        <div>
-          <Form {...form}>
-            <form
-              className="flex flex-col gap-3"
-              onSubmit={form.handleSubmit(onSubmit)}
-            >
-              <FormField
-                name="email"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Email:
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        placeholder="fabio@luvfindr.com"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="password"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Password:
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="password" placeholder="******" />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="confirmPassword"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-bold text-lg text-primary">
-                      Confirm Password:
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="password" placeholder="******" />
-                    </FormControl>
-                    <FormMessage className="text-primary" />
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="font-bold mt-2"
-                disabled={mutation.isPending}
-              >
-                Register
-              </Button>
-              {error && <p className="text-primary text-sm">{error}</p>}
-            </form>
-          </Form>
-          <div className="flex items-center gap-1 mt-3">
-            <p className="text-white">Already have an account?</p>
-            <Link href="/">
-              <span className="text-primary font-bold hover:underline">
-                Login Here
-              </span>
-            </Link>
-          </div>
-        </div>
-      )}
-    </>
+    <div>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-3"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            name="email"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Email:
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    placeholder="fabio@luvfindr.com"
+                  />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="password"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Password:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" placeholder="******" />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="confirmPassword"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-lg text-primary">
+                  Confirm Password:
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" placeholder="******" />
+                </FormControl>
+                <FormMessage className="text-primary" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="font-bold mt-2"
+            disabled={mutation.isPending}
+          >
+            Register
+          </Button>
+          {error && <p className="text-primary text-sm">{error}</p>}
+        </form>
+      </Form>
+      <div className="flex items-center gap-1 mt-3">
+        <p className="text-white">Already have an account?</p>
+        <Link href="/">
+          <span className="text-primary font-bold hover:underline">
+            Login Here
+          </span>
+        </Link>
+      </div>
+    </div>
   );
 };
 
