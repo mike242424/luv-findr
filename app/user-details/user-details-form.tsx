@@ -175,7 +175,7 @@ const UserDetailsForm = () => {
                   First Name:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="First Name" />
+                  <Input {...field} type="text" placeholder="Fabio" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}
@@ -192,7 +192,7 @@ const UserDetailsForm = () => {
                   Last Name:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="Last Name" />
+                  <Input {...field} type="text" placeholder="Lanzoni" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}
@@ -209,7 +209,7 @@ const UserDetailsForm = () => {
                   Date Of Birth (MM/DD/YYYY):
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="MM/DD/YYYY" />
+                  <Input {...field} type="text" placeholder="03/15/1959" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}
@@ -226,7 +226,7 @@ const UserDetailsForm = () => {
                   City:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="City" />
+                  <Input {...field} type="text" placeholder="Hollywood" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}
@@ -243,7 +243,7 @@ const UserDetailsForm = () => {
                   State:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="State" />
+                  <Input {...field} type="text" placeholder="California" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}
@@ -326,7 +326,7 @@ const UserDetailsForm = () => {
                   Profession:
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" placeholder="Profession" />
+                  <Input {...field} type="text" placeholder="Actor" />
                 </FormControl>
                 <FormMessage className="text-primary">
                   {fieldState.error?.message}
