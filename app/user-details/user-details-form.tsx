@@ -324,7 +324,7 @@ const UserDetailsForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <FormItem>
-                <div className="flex items-center gap-4">
+                <div className="flex items-start gap-4">
                   <div className="flex-1">
                     <FormLabel className="font-bold text-lg text-primary">
                       Profile Photo:
@@ -359,7 +359,7 @@ const UserDetailsForm = () => {
                         alt="Profile Photo"
                         width={75}
                         height={75}
-                        className="rounded-full"
+                        className="rounded"
                       />
                     </div>
                   )}

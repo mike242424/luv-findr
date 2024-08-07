@@ -87,7 +87,7 @@ const Dashboard = () => {
                 alt={`${currentMatch.firstName} profile photo`}
                 width={300}
                 height={300}
-                className="rounded-full"
+                className="rounded"
               />
             </div>
             <CardTitle>
