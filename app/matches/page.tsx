@@ -7,7 +7,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { getMatches, unmatchUser } from '@/lib/matchesApi';
 import { calculateAge } from '@/lib/dateUtils';
 import LoadingSpinner from '@/components/loading';
-import NoUsersFound from '../../components/no-users-found';
+import NoMatchesFoundPage from './no-matches-found';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -86,7 +86,7 @@ const MatchesPage = () => {
           </div>
         ))
       ) : (
-        <NoUsersFound />
+        <NoMatchesFoundPage />
       )}
     </>
   );

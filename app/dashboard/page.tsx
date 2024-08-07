@@ -7,7 +7,7 @@ import axios from 'axios';
 import { getUserDetails, getUsers } from '@/lib/userApi';
 import { calculateAge } from '@/lib/dateUtils';
 import LoadingSpinner from '@/components/loading';
-import NoUsersFound from '../../components/no-users-found';
+import NoUsersFound from './no-users-found';
 import ProfileIncompletePage from './profile-incomplete';
 import { Button } from '@/components/ui/button';
 import {
