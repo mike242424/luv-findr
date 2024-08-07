@@ -353,12 +353,12 @@ const UserDetailsForm = () => {
                     </FormControl>
                   </div>
                   {profilePhotoUrl && (
-                    <div className="flex-none">
+                    <div className="flex mt-2">
                       <Image
                         src={profilePhotoUrl}
                         alt="Profile Photo"
-                        width={75}
-                        height={75}
+                        width={100}
+                        height={100}
                         className="rounded"
                       />
                     </div>
