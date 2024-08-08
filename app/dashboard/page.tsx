@@ -10,13 +10,7 @@ import LoadingSpinner from '@/components/loading';
 import NoUsersFound from './no-users-found';
 import ProfileIncompletePage from './profile-incomplete';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 const Dashboard = () => {
   const { data: usersData, isLoading: isLoadingUsers } = useQuery({
@@ -76,12 +70,12 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col items-center">
       {currentMatch ? (
-        <Card className="max-w-md w-full my-28 text-white bg-black border-2 border-primary">
-          <CardHeader>
-            <CardTitle className="text-center text-primary font-bold text-3xl">
-              FIND YOUR MATCH
-            </CardTitle>
-            <div className="flex justify-center py-10">
+        <Card className="max-w-md w-full my-28 text-white bg-black border-2 border-primary h-[500px] flex flex-col">
+          <CardTitle className="text-center text-primary font-bold text-3xl mb-4 p-4 border-b-2 border-primary">
+            FIND YOUR MATCH
+          </CardTitle>
+          <div className="flex-1 overflow-y-auto">
+            <div className="flex justify-center p-4">
               <Image
                 src={currentMatch.profilePhoto}
                 alt={`${currentMatch.firstName} profile photo`}
@@ -90,20 +84,22 @@ const Dashboard = () => {
                 className="rounded"
               />
             </div>
-            <CardTitle>
-              <strong>
-                {currentMatch.firstName},{' '}
-                {calculateAge(currentMatch.dateOfBirth)}
-              </strong>
-            </CardTitle>
-            <p className="text-md pt-3">{currentMatch.profession}</p>
-          </CardHeader>
-          <CardContent>
-            <hr className="border-[1px] border-primary" />
-            <p className="my-4 text-md">{currentMatch.about}</p>
-            <hr className="border-[1px] border-primary mb-2" />
-          </CardContent>
-          <CardFooter className="flex justify-between">
+            <div className="ms-6 m-4">
+              <CardTitle>
+                <strong>
+                  {currentMatch.firstName},{' '}
+                  {calculateAge(currentMatch.dateOfBirth)}
+                </strong>
+              </CardTitle>
+              <p className="text-md pt-3">{currentMatch.profession}</p>
+            </div>
+            <CardContent>
+              <hr className="border-[1px] border-primary" />
+              <p className="my-4 text-md">{currentMatch.about}</p>
+              <hr className="border-[1px] border-primary mb-2" />
+            </CardContent>
+          </div>
+          <CardFooter className="flex justify-between p-4 mt-4 border-t-2 border-primary bg-black rounded-b-md">
             <Button onClick={() => handleMatch(currentMatch.id)}>Match</Button>
             <Button onClick={handleNext}>Skip</Button>
           </CardFooter>
