@@ -22,10 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={nunito.className}>
+      <body className={`${nunito.className} flex flex-col min-h-screen`}>
         <QueryClientContextProvider>
           <Navbar />
-          {children}
+          <main className="flex-grow">{children}</main>
           <Footer />
         </QueryClientContextProvider>
       </body>
