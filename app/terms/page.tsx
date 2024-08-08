@@ -2,12 +2,12 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card';
 
 const TermsOfServicePage = () => {
   return (
-    <div className="container mx-auto my-10 lg:px-4">
-      <Card className="bg-black text-white p-8 md:p-12 md:m-20 mt-28 border-2 border-primary">
-        <CardTitle className="text-center text-primary font-bold text-3xl mb-4">
+    <>
+      <Card className="bg-black text-white p-4 md:p-8 md:mx-20 m-16 mt-28 border-2 border-primary">
+        <CardTitle className="text-center text-primary font-bold text-3xl m-4">
           Terms of Service
         </CardTitle>
-        <CardContent>
+        <CardContent className="mt-10">
           <h2 className="text-2xl text-primary font-semibold mb-4">
             Introduction
           </h2>
@@ -70,7 +70,7 @@ const TermsOfServicePage = () => {
           </p>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 };
 
