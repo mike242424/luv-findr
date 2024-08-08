@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 const NoMatchesFoundPage = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-16 text-white">
-      <Card className="max-w-md w-full my-12 text-white bg-black border-2 border-primary">
+      <Card className="max-w-md w-full text-white bg-black border-2 border-primary">
         <CardHeader>
           <CardTitle className="text-center text-primary font-bold text-3xl">
             No Matches Found

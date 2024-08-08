@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const NoMessagesFoundPage = () => {
   return (
     <div className="flex flex-col items-center mt-10 text-white">
-      <Card className="max-w-md w-full my-12 text-white bg-black border-2 border-primary p-6">
+      <Card className="max-w-md w-full my-12 text-white bg-black  p-6 border-0">
         <CardHeader>
           <CardTitle className="text-center text-primary font-bold text-3xl">
             No Messages Found

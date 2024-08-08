@@ -76,7 +76,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col items-center">
       {currentMatch ? (
-        <Card className="max-w-md w-full my-12 text-white bg-black border-2 border-primary">
+        <Card className="max-w-md w-full my-28 text-white bg-black border-2 border-primary">
           <CardHeader>
             <CardTitle className="text-center text-primary font-bold text-3xl">
               FIND YOUR MATCH
