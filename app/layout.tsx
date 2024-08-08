@@ -3,6 +3,7 @@ import { Nunito } from 'next/font/google';
 import './globals.css';
 import QueryClientContextProvider from '@/contexts/query-client-provider';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/ui/footer';
 
 export const metadata: Metadata = {
   title: 'Luv Findr',
@@ -25,6 +26,7 @@ export default function RootLayout({
         <QueryClientContextProvider>
           <Navbar />
           {children}
+          <Footer />
         </QueryClientContextProvider>
       </body>
     </html>
