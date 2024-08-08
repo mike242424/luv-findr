@@ -2,7 +2,7 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card';
 
 const TermsOfServicePage = () => {
   return (
-    <Card className="bg-black text-white p-4 md:p-8 md:mx-20 mx-8 mt-28 border-2 border-primary">
+    <Card className="bg-black text-white p-4 md:p-8 md:mx-20 mx-7 mt-28 border-2 border-primary">
       <CardTitle className="text-center text-primary font-bold text-3xl m-4">
         Terms of Service
       </CardTitle>

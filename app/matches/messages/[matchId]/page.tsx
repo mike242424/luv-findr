@@ -81,7 +81,7 @@ const MessagesPage = ({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center mt-24 mx-10">
+    <div className="flex flex-col items-center justify-center mt-24 mx-3">
       <div className="flex flex-col w-full lg:flex-row gap-4">
         <div className="w-full lg:w-1/2 p-4 flex flex-col">
           <Card className="flex flex-col bg-black border-2 border-primary rounded-lg h-[500px] overflow-y-auto text-white">

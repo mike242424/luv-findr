@@ -40,7 +40,7 @@ const MatchesPage = () => {
   const matchedUsers = data?.matchedUsers || [];
 
   return (
-    <div className="mt-28 mx-10">
+    <div className="mt-28 mx-4">
       {matchedUsers.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
           {matchedUsers.map((user: User) => (
