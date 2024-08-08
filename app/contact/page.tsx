@@ -1,3 +1,4 @@
+import { Twitter, Facebook, Instagram } from 'lucide-react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 
 const ContactPage = () => {
@@ -35,14 +36,14 @@ const ContactPage = () => {
         <p className="mb-4">
           Stay connected with us on social media for updates and news.
         </p>
-        <div className="flex justify-center gap-4">
+        <div className="flex gap-4">
           <a
             href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >
-            Twitter
+            <Twitter />
           </a>
           <a
             href="https://facebook.com"
@@ -50,7 +51,7 @@ const ContactPage = () => {
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >
-            Facebook
+            <Facebook />
           </a>
           <a
             href="https://instagram.com"
@@ -58,7 +59,7 @@ const ContactPage = () => {
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >
-            Instagram
+            <Instagram />
           </a>
         </div>
       </CardContent>
