@@ -3,7 +3,7 @@ import { Nunito } from 'next/font/google';
 import './globals.css';
 import QueryClientContextProvider from '@/contexts/query-client-provider';
 import Navbar from '@/components/navbar';
-import Footer from '@/components/ui/footer';
+import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
   title: 'Luv Findr',
