@@ -33,6 +33,8 @@ const MessagesPage = ({
   });
 
   const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const mutation = useMutation({
     mutationFn: (content: string) => sendMessage({ matchId, content }),
@@ -58,12 +60,20 @@ const MessagesPage = ({
     }
   };
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+  }, [messages]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [messages]);
 
   if (messagesLoading || userDetailsLoading) {
@@ -78,7 +88,7 @@ const MessagesPage = ({
             <CardTitle className="text-center text-primary font-bold text-3xl mb-4 p-4 border-b-2 border-primary">
               MY MATCH
             </CardTitle>
-            <div className="overflow-y-auto mb-4">
+            <div className="overflow-y-auto mb-4 mx-4">
               <div className="flex justify-center py-10">
                 <Image
                   src={matchedUser?.user?.profilePhoto}
@@ -107,11 +117,19 @@ const MessagesPage = ({
           </Card>
         </div>
         <div className="w-full lg:w-1/2 p-4 flex flex-col">
-          <Card className="flex flex-col bg-black border-2 border-primary rounded-lg h-[500px] overflow-y-auto">
+          <Card
+            className={`flex flex-col bg-black border-2 border-primary rounded-lg h-[500px] ${
+              messages.length > 0 ? 'overflow-y-auto' : ''
+            }`}
+          >
             <CardTitle className="text-center text-primary font-bold text-3xl mb-4 p-4 border-b-2 border-primary">
               MY MESSAGES
             </CardTitle>
-            <div className="flex-1 overflow-y-auto p-4">
+            <div
+              className={`flex-1 ${
+                messages.length > 0 ? 'overflow-y-auto' : ''
+              } p-4`}
+            >
               {messages && messages.length > 0 ? (
                 messages.map((message: any) => (
                   <div
@@ -139,17 +157,18 @@ const MessagesPage = ({
                         )}
                       </span>
                     </div>
+                    <div ref={messagesEndRef} />
                   </div>
                 ))
               ) : (
                 <NoMessagesFoundPage />
               )}
-              <div ref={messagesEndRef} />
             </div>
             {messages.length > 0 && (
               <div className="flex items-center justify-center w-full mt-4 p-4 bg-black border-t-2 border-primary">
                 <div className="flex w-full gap-2">
                   <Input
+                    ref={inputRef}
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={handleKeyDown}

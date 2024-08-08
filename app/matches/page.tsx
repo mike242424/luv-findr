@@ -42,32 +42,30 @@ const MatchesPage = () => {
   return (
     <div className="mt-28 mx-10">
       {matchedUsers.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 justify-items-center">
           {matchedUsers.map((user: User) => (
             <Card
               key={user.id}
               className="flex flex-col max-w-md w-full text-white bg-black border-2 border-primary h-[500px]"
             >
+              <CardTitle className="text-center text-primary font-bold text-3xl mb-4 p-4 border-b-2 border-primary">
+                {user.firstName} {user.lastName}
+              </CardTitle>
               <div className="overflow-y-auto">
-                <CardHeader className="p-4">
-                  <div className="flex justify-center py-4">
-                    <Image
-                      src={user.profilePhoto!}
-                      alt={`${user.firstName} profile photo`}
-                      width={300}
-                      height={300}
-                      className="rounded"
-                    />
-                  </div>
-                  <CardTitle>
-                    <strong>
-                      {user.firstName} {user.lastName},{' '}
-                      {calculateAge(user.dateOfBirth?.toString() || null)}
-                    </strong>
-                  </CardTitle>
-                  <p className="text-md pt-3">{user.profession}</p>
-                </CardHeader>
-                <CardContent className="p-4">
+                <div className="flex justify-center py-4">
+                  <Image
+                    src={user.profilePhoto!}
+                    alt={`${user.firstName} profile photo`}
+                    width={300}
+                    height={300}
+                    className="rounded"
+                  />
+                </div>
+                <CardContent className="mx-6">
+                  <p className="my-4 text-xl">
+                    {user.profession},{' '}
+                    {calculateAge(user.dateOfBirth?.toString() || null)}
+                  </p>
                   <hr className="border-[1px] border-primary" />
                   <p className="my-4 text-md">{user.about}</p>
                   <hr className="border-[1px] border-primary mb-2" />
